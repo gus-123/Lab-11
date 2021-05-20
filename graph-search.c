@@ -189,15 +189,60 @@ int insertEdge(GraphNode* h, int v, int w) {
 
 
 GraphNode* pop() {
-	
+	GraphNode* aNode = NULL;
+    if (top == -1) {  //스택의 top의 위치가 -1인 경우
+
+        return aNode;
+    }
+    aNode = stack[top];  //스택의 top값을 aNode의 위치에 저장
+    top--;  //스택 top의 위치를 가르키는 숫자 값을 감소
+
+    return aNode;
 }
 
 void push(GraphNode* aNode)	{	
-		
+	if (top == MAX_STACK_SIZE - 1) {  //스택의 top에 스택의 최대 사이즈-1을 한 숫자 값을 저장
+
+        return;
+    }
+	++top;  //스택 top의 위치를 가르키는 숫자 값을 증가
+    stack[top] = aNode;  //aNode값을 스택의 top의 위치에 저장	
 }
 
 void DFS(GraphNode* h, int v) {
+	GraphNode* g = (h+v);  //head 노드가 v에 해당하는 정점과 연결하는 동적 메모리 할당
+	GraphNode* node = NULL;	//ptr 노드에 스택의 출력값을 받을 동적 메모리 할당
+
+	if ((h+v)->vertex == -1) {  //head 노드와 연결된 정점들 중 해당 정점이 없는 경우
+		printf("\n 그래프에 정점이 없습니다! \n");
+	}
+
+	int visited[10] = { 0, };  //도착 여부를 확인하는 배열을 초기화
+
+	printf("\n깊이 우선 탐색 >>");
 	
+	while ((h+v)->vertex != -1) {
+		v = g->vertex;	//head 노드의 vertex를 v에 저장
+		
+		if (!visited[v]) {	//v에 해당하는 정점에 도착 하지 않은 경우
+			printf("%5d", v);
+
+			visited[v] = 1;  //정점 v에 대한 배열 값을 1로 설정
+			push(h+v);  //깊이 우선 탐색을 시작하는 정점 v를 스택에 값을 추가
+			g = h+v;  //해당 정점을 가진 head 노드로 이동
+		}
+		else { //해당 정점에 다시 도착 한 경우
+			if (g->link == NULL) {	//다음 정점이 존재하지 않을 경우
+				node = pop();  //ptr 노드에 스택의 값을 출력
+				g = h+(g->vertex);
+			}
+			g = g->link;  // 다음 정점이 존재 할 경우 다음 정점으로 이동
+		}
+
+		if (top == -1) {  //stack의 위치가 -1인 경우
+			break;	
+		} 
+	}
 }
 
 
