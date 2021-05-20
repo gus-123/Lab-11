@@ -126,11 +126,65 @@ void freeVERTEX(GraphNode* ptr) {
 }
 
 int insertVertex(GraphNode* h, int v) {
-	
+	GraphNode* g = (h+v);  //head 노드가 v에 해당하는 정점과 연결하는 동적 메모리 할당
+
+	if (v >= 10) {  //vertex의 번호가 10이상인 경우 
+		printf("\n 그래프 정점의 개수를 초과하였습니다!");
+
+		return 0;
+	}
+    g->vertex = v;  //g의 vertex에 v의 정점 주소를 저장
 }
 
 int insertEdge(GraphNode* h, int v, int w) {
+	GraphNode* node1 = (GraphNode*)malloc(sizeof(GraphNode));  //삽입할 새로운 node1의 동적 메모리 할당
+	GraphNode* node2 = (GraphNode*)malloc(sizeof(GraphNode));  //삽입할 새로운 node2의 동적 메모리 할당
+	GraphNode* g = (h+v); //head 노드가 v에 해당하는 정점과 연결하는 동적 메모리 할당
+
+	node1->vertex = v;  //node1의 vertex에 v의 정점 주소를 저장
+	node2->vertex = w;  //node2의 vertex에 w의 정점 주소를 저장
+	node1->link = node2->link = NULL;  //node1, node2의 link 초기화
+
+	if ((h+v)->vertex == -1 || (h+w)->vertex == -1) {  //head 노드와 연결된 정점들 중 해당 정점이 없는 경우
+		printf("\n 그래프에 없는 정점이 있습니다! \n");
+
+		return 0;
+	}
+
+	while (h+v) {  //head 노드가 v에 해당하는 정점과 연결하는 경우
+		if (g->link == NULL) {	//연결된 정점이 없는 경우 w의 정점을 가르킴 
+			g->link = node2;	
+			break;
+		}
+
+		if (g->link->vertex > w) {	//w의 정점의 값이 보다 head 노드에 연결된 정점의 값이 큰 경우 작은 정점 값의 순으로 인접리스트 생성
+			node2->link = g->link;
+			g->link = node2;
+			break;
+		}
+		else {  //다음 정점이 존재 할 경우 다음 정점으로 이동
+			g=g->link;	 
+		}
+	}
+	g = (h+w);  //head 노드가 w에 해당하는 정점과 연결하는 동적 메모리 할당
 	
+	while (h+w) {  //head 노드가 w에 해당하는 정점과 연결하는 경우
+		if (g->link == NULL) {  //연결된 정점이 없는 경우 v의 정점을 가르킴
+			g->link = node1;
+			break;
+		}
+
+		if (g->link->vertex > v) {  //v의 정점의 값보다 head 노드에 연결된 정점의 값이 큰 경우 작은 정점 값의 순으로 인접리스트 생성
+			node1->link = g->link;
+			g->link = node1;
+			break;
+		}
+		else {  //다음 정점이 존재 할 경우 다음 정점으로 이동
+			g=g->link;  
+		}
+	}
+
+	return 0;
 }
 
 
