@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//그래프의 노드 구조를 구조체로 정의
 typedef struct graphnode {
 	int vertex;
 	struct graphnode* link;
 } GraphNode;
 
+//스택을 위한 요소
 #define MAX_STACK_SIZE		10
 GraphNode* stack[MAX_STACK_SIZE];
 int top = -1;
@@ -13,6 +15,7 @@ int top = -1;
 GraphNode* pop();
 void push(GraphNode* aNode);
 
+//큐를 위한 요소
 #define MAX_QUEUE_SIZE		10
 GraphNode* queue[MAX_QUEUE_SIZE];
 int front = -1;
@@ -23,17 +26,20 @@ void enQueue(GraphNode* aNode);
 
 
 int initialize(GraphNode** h); 
-void freeVERTEX(GraphNode* ptr);  
-int insertVertex(GraphNode* h, int v);   
-int insertEdge(GraphNode* h, int v, int w);  
-void DFS(GraphNode* h, int v);  
-void BFS(GraphNode* h, int v);  
-void printGraph(GraphNode* h);  
+
+//함수 리스트
+void freeVERTEX(GraphNode* ptr);  //그래프의 정점 메모리 해제 연산  
+int insertVertex(GraphNode* h, int v);  //정점 추가 연산   
+int insertEdge(GraphNode* h, int v, int w);  //선 추가 연산  
+void DFS(GraphNode* h, int v);  //깊이 우선 탐색 연산  
+void BFS(GraphNode* h, int v);  //너비 우선 탐색 연산  
+void printGraph(GraphNode* h);  //그래프 출력 연산  
 
 
 int main()
 {
 	char command;
+    printf("[----- [김현민]  [2018038088] -----]");
 	int v;
 	int w;
     GraphNode* head = NULL;
@@ -305,5 +311,15 @@ void BFS(GraphNode* h, int v) {
 }
 
 void printGraph(GraphNode* h) {
-	
+	GraphNode* g;
+
+	for (int i = 0; i < 10; i++) {
+		printf("\n\t\t정점%d의 인접 리스트", i);
+		
+		g = h+i;
+		while (g) {
+			printf(" -> %d", g->vertex);
+			g = g->link;
+		}
+	}
 }
