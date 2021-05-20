@@ -247,15 +247,61 @@ void DFS(GraphNode* h, int v) {
 
 
 GraphNode* deQueue() {
-	
+	GraphNode* aNode = NULL;
+
+    if (front == rear) {  //front값과 rear값이 같을 경우
+        if (front != -1) {  //큐의 front의 위치가 -1인 경우
+            aNode = queue[front];
+            front = rear = -1;
+        }
+
+        return aNode;
+    }
+    aNode = queue[front];  //큐의 front값을 aNode의 위치에 저장
+    front++;  //큐 front의 위치를 가르키는 숫자 값을 증가
+
+    return aNode;	
 }
 
 void enQueue(GraphNode* aNode) {
-	
+	if (rear == MAX_QUEUE_SIZE - 1) {  //큐의 rear에 큐의 최대 사이즈-1을 한 숫자 값을 저장
+
+        return;
+    }
+    if (front == -1) {  //큐의 front의 위치가 -1인 경우
+        front++;  //큐 front의 위치를 가르키는 숫자 값을 증가
+    }
+    rear++;  //큐 rear의 위치를 가르키는 숫자 값을 증가
+    queue[rear] = aNode;  //aNode값을 큐의 rear의 위치에 저장
 }
 
 void BFS(GraphNode* h, int v) {
+	GraphNode* g = (h+v);  //head 노드가 v에 해당하는 정점과 연결하는 동적 메모리 할당
 	
+	if ((g)->vertex == -1) {  //head 노드와 연결된 정점들 중 해당 정점이 없는 경우
+		printf("\n 그래프에 정점이 없습니다! \n");
+	}
+
+	int visited[10] = { 0, };	//도착 여부를 확인하는 배열을 초기화
+
+	printf("\n너비 우선 탐색 >>  %3d", v);
+
+	visited[v] = 1;  //정점 v에 대한 배열 값을 1로 설정
+	enQueue(g);  //현재 정점 g를 큐에 추가
+
+	while ((g)->vertex != -1) {  //head 노드와 연결된 정점들 중 해당 정점이 있는 경우
+		g = deQueue();  //현재 큐에서 삭제하여 g에 추가
+		for (; g; g = g->link) {  //인접한 정점이 있는 경우
+			v = g->vertex;
+			if (!visited[v]) {  //v에 해당하는 정점에 도착 하지 않은 경우
+				printf("%5d", g->vertex);
+
+				enQueue(g);  //현재 정점 g를 큐에 추가
+				visited[v] = 1;  //정점 v에 대한 배열 값을 1로 설정
+			}
+		}
+		break;
+	}
 }
 
 void printGraph(GraphNode* h) {
